@@ -1,10 +1,11 @@
-import { User, createUser } from '@/lib/users/user'
+import { User, createUser, storeUser } from '@/lib/users/user'
+import { addUserToGame } from '@/lib/firebase/database'
 import React from 'react'
 
 const UsernameDialog = ({
-  onSubmit
+  gameID,
 }: {
-  onSubmit: (user: User) => void
+  gameID: string
 }) => {
   const [username, setUsername] = React.useState('')
 
@@ -14,8 +15,8 @@ const UsernameDialog = ({
 
   const handleUsernameSubmit = () => {
     const user: User = createUser(username);
-    localStorage.setItem('user', JSON.stringify(user));
-    onSubmit(user);
+    storeUser(user);
+    addUserToGame(gameID, user);
   }
 
   return (
