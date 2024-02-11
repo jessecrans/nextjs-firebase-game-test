@@ -1,8 +1,8 @@
 "use client";
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useObject } from 'react-firebase-hooks/database';
-import { DataSnapshot, ref } from 'firebase/database';
+import { DataSnapshot, ref, remove } from 'firebase/database';
 import { db } from '@/lib/firebase/firebase';
 import UsernameDialog from '@/components/user/UsernameDialog';
 import { getUser } from '@/lib/users/user';
@@ -19,9 +19,23 @@ const Game = ({
   const gameRef = ref(db, `games/${params.gameID}`);
   const [game, loading, error] = useObject(gameRef);
 
-  if (game && !game.val()) { // if there is no game with the given ID
-    notFound();
-  }
+  useEffect(() => {
+    if (game && !game.val()) { // if there is no game with the given ID
+      notFound();
+    }
+
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      // do something before the user leaves the page
+    }
+
+    // add event listener to handle user leaving the page
+    window.addEventListener('beforeunload', handleBeforeUnload)
+
+    // remove event listener when component is unmounted
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+    }
+  }, [])
 
   /**
    * Determine if the username dialog should be displayed.
@@ -32,8 +46,8 @@ const Game = ({
   const displayUsernameDialog = (game: DataSnapshot | undefined) => {
     return (
       game && // the game exists
-      (!game.val().user1.id || !game.val().user2.id) && // the game is not full
-      !(game.val().user1 && game.val().user1.id === getUser().id) // the current user is not already in the game
+      (!game.val().user1?.id || !game.val().user2.id) && // the game is not full
+      !(game.val().user1 && game.val().user1?.id === getUser().id) // the current user is not already in the game
     )
   }
 
@@ -48,8 +62,8 @@ const Game = ({
           <div>
             <p>Game ID: {params.gameID}</p>
             <div>
-              <p>Player 1: {game?.val().user1.name || "..."}</p>
-              <p>Player 2: {game?.val().user2.name || "..."}</p>
+              <p>Player 1: {game?.val().user1?.name || "..."}</p>
+              <p>Player 2: {game?.val().user2?.name || "..."}</p>
             </div>
             {
               displayUsernameDialog(game) &&
