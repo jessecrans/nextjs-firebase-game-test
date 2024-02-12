@@ -12,4 +12,6 @@ export const GET = (request: Request) => {
       }
     }
   })
+
+  return new Response("Lobbies cleaned up.");
 }
