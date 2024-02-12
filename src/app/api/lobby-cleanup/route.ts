@@ -3,7 +3,7 @@ import { db } from "@/lib/firebase/firebase";
 import { Game } from "@/lib/firebase/database";
 
 export const GET = (request: Request) => {
-  const cutOffTime = Date.now() - 1000 * 60 * 60 * 3; // 3 hours ago
+  const cutOffTime = Date.now() - 1000 * 60 * 20; // 20 minutes ago
   const gamesRef = ref(db, 'games');
   get(gamesRef).then((snapshot) => {
     for (const [gameId, game] of Object.entries<Game>(snapshot.val())) {
