@@ -2,6 +2,19 @@ import { ref, get, set, push } from "firebase/database";
 import { db } from "@/lib/firebase/firebase";
 import { User } from "../users/user";
 
+export type Game = {
+  user1: {
+    id: string,
+    name: string
+  },
+  user2: {
+    id: string,
+    name: string
+  },
+  board: string[][],
+  lastMoveTime: number,
+}
+
 /**
  * Creates a new game in the database.
  * 
@@ -18,11 +31,13 @@ export const createGame = async () => {
       id: '',
       name: ''
     },
-    spectators: [],
-    state: {
-      board: []
-    }
-  })
+    board: [
+      ['', '', ''],
+      ['', '', ''],
+      ['', '', '']
+    ],
+    lastMoveTime: Date.now(),
+  });
 
   return newGameRef.key;
 }

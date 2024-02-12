@@ -23,18 +23,6 @@ const Game = ({
     if (game && !game.val()) { // if there is no game with the given ID
       notFound();
     }
-
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      // do something before the user leaves the page
-    }
-
-    // add event listener to handle user leaving the page
-    window.addEventListener('beforeunload', handleBeforeUnload)
-
-    // remove event listener when component is unmounted
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload)
-    }
   }, [])
 
   /**
