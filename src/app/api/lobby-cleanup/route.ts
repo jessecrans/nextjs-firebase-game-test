@@ -2,7 +2,7 @@ import { ref, remove, get } from "firebase/database";
 import { db } from "@/lib/firebase/firebase";
 import { Game } from "@/lib/firebase/database";
 
-export const runtime = 'nodejs';
+export const runtime = 'edge';
 
 export const GET = (request: Request) => {
   const cutOffTime = Date.now() - 1000 * 60 * 5; // 5 minutes ago
