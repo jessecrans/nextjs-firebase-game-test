@@ -4,12 +4,12 @@ import { Game } from "@/lib/firebase/database";
 
 export const runtime = 'edge';
 
-export const GET = (request: Request) => {
+export const GET = async (request: Request) => {
   const cutOffTime = Date.now() - 1000 * 60 * 5; // 5 minutes ago
   const gamesRef = ref(db, 'games');
   console.log("GET /api/lobby-cleanup")
 
-  get(gamesRef).then((snapshot) => {
+  await get(gamesRef).then((snapshot) => {
     console.log("Data read successfully", snapshot.val());
     for (const [gameId, game] of Object.entries<Game>(snapshot.val())) {
       if (game.lastMoveTime < cutOffTime) {
