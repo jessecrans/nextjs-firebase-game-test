@@ -17,9 +17,9 @@ export const GET = async (request: Request) => {
         remove(ref(db, `games/${gameId}`));
       }
     }
-    return new Response("Lobbies cleaned up.");
   }).catch((error) => {
     console.error("Error getting data:", error);
-    return new Response("Lobbies cleaned up.");
   });
+
+  return new Response("Lobbies cleaned up.");
 }
