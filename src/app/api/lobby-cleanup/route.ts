@@ -22,5 +22,4 @@ export const GET = (request: Request) => {
     console.error("Error getting data:", error);
     return new Response("Lobbies cleaned up.");
   });
-
 }
