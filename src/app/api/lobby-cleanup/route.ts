@@ -15,7 +15,7 @@ export const GET = async (request: Request) => {
 
   console.log("Getting games...", getID);
 
-  get(gamesRef).then((snapshot) => {
+  await get(gamesRef).then((snapshot) => {
     console.log("Data read successfully", getID, snapshot.val());
 
     for (const [gameId, game] of Object.entries<Game>(snapshot.val())) {
@@ -29,5 +29,6 @@ export const GET = async (request: Request) => {
   }).catch((error) => {
     console.error("Error reading data", getID, error);
   });
+
   return new Response("Lobbies cleaned up.");
 }
