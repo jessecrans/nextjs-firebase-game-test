@@ -9,7 +9,9 @@ import { getUser } from '@/lib/users/user';
 import PageLayout from '@/layouts/PageLayout';
 import { notFound } from 'next/navigation';
 
-const Game = ({
+import Game from '@/components/game/Game';
+
+const GamePage = ({
   params
 }: {
   params: {
@@ -39,6 +41,20 @@ const Game = ({
     )
   }
 
+  /**
+   * Determine if the game should be displayed.
+   * 
+   * @param game 
+   * @returns True if the game exists and both users are in the game, otherwise false
+   */
+  const displayGame = (game: DataSnapshot | undefined) => {
+    return (
+      game && // the game exists
+      game.val().user1.id && // user1 exists
+      game.val().user2.id // user2 exists
+    )
+  }
+
   return (
     <PageLayout>
       {
@@ -46,7 +62,7 @@ const Game = ({
           <p>Loading...</p>
         ) : error ? (
           <p>Error: {error.message}</p>
-        ) : (
+        ) : !displayGame(game) ? (
           <div>
             <p>Game ID: {params.gameID}</p>
             <div>
@@ -58,10 +74,12 @@ const Game = ({
               <UsernameDialog gameID={params.gameID} />
             }
           </div>
+        ) : (
+          <Game game={game?.val()} />
         )
       }
     </PageLayout>
   )
 }
 
-export default Game
+export default GamePage
