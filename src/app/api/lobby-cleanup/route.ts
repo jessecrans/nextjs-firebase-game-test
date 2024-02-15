@@ -2,7 +2,8 @@ import { ref, remove, get } from "firebase/database";
 import { db } from "@/lib/firebase/firebase";
 import { Game } from "@/lib/firebase/database";
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export const GET = async (request: Request) => {
   const getID = Math.round(Math.random() * 100)
@@ -21,7 +22,7 @@ export const GET = async (request: Request) => {
   for (const [gameId, game] of Object.entries<Game>(snapshot.val())) {
     if (game.lastMoveTime < cutOffTime) {
       console.log(`Game ${gameId} is too old and will be removed.`, getID);
-      remove(ref(db, `games/${gameId}`));
+      await remove(ref(db, `games/${gameId}`));
     }
   }
 
