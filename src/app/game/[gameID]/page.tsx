@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useEffect } from 'react'
 import { useObject } from 'react-firebase-hooks/database';
@@ -75,7 +75,7 @@ const GamePage = ({
             }
           </div>
         ) : (
-          <Game game={game?.val()} />
+          <Game game={game?.val()} gameID={params.gameID} />
         )
       }
     </PageLayout>

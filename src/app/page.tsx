@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <PageLayout>
       <h1>
-        Nextjs Firebase Game
+        Tic Tac Joe
       </h1>
       <Create />
     </PageLayout>

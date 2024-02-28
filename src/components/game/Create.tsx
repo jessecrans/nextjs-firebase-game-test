@@ -14,7 +14,7 @@ const Create = () => {
   return (
     <button
       onClick={handleCreateGame}
-      className='p-2 bg-green-500 text-white rounded'
+      className='p-2 bg-green-500 text-white rounded m-4'
     >
       Create Game
     </button>
