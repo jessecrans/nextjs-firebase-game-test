@@ -27,8 +27,8 @@ export type Game = {
  * @returns A promise that resolves to the key of the new game
  */
 export const createGame = async () => {
-  const newGameRef = push(ref(db, 'games'));
-  set(newGameRef, {
+  const newGameRef = await push(ref(db, 'games'));
+  await set(newGameRef, {
     user1: {
       id: '',
       name: '',

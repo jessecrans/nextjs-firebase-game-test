@@ -21,11 +21,9 @@ const GamePage = ({
   const gameRef = ref(db, `games/${params.gameID}`);
   const [game, loading, error] = useObject(gameRef);
 
-  useEffect(() => {
-    if (game && !game.val()) { // if there is no game with the given ID
-      notFound();
-    }
-  }, [])
+  if (game && !game.val()) { // if there is no game with the given ID
+    notFound();
+  }
 
   /**
    * Determine if the username dialog should be displayed.
