@@ -6,7 +6,7 @@ const PageLayout = ({
   children: React.ReactNode
 }) => {
   return (
-    <main className='p-4 text-center'>
+    <main className='p-4'>
       {children}
     </main>
   )
