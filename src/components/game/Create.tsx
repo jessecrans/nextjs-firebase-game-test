@@ -14,7 +14,7 @@ const Create = () => {
   return (
     <button
       onClick={handleCreateGame}
-      className='p-2 bg-green-500 text-white rounded m-4'
+      className='p-2 bg-green-500 text-white rounded m-4 hover:bg-green-600'
     >
       Create Game
     </button>

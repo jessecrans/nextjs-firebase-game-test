@@ -24,7 +24,6 @@ const Game = ({
           ({(game.turn === game.user1.id && getTurnNumber(game) % 2 === 0) || (game.turn === game.user2.id && getTurnNumber(game) % 2 !== 0) ? "X" : "O"})&nbsp;
           {game.user1.name}
           &nbsp;({game.user1.wins ? game.user1.wins : 0})&nbsp;
-          {/* {game.turn === game.user1.id && "<-"} */}
         </p>
         <p>
           vs
@@ -33,7 +32,6 @@ const Game = ({
           ({(game.turn === game.user1.id && getTurnNumber(game) % 2 === 0) || (game.turn === game.user2.id && getTurnNumber(game) % 2 !== 0) ? "O" : "X"})&nbsp;
           {game.user2.name}
           &nbsp;({game.user2.wins ? game.user2.wins : 0})&nbsp;
-          {/* {game.turn === game.user2.id && "<-"} */}
         </p>
       </div>
       <Board board={game.board} gameID={gameID} />

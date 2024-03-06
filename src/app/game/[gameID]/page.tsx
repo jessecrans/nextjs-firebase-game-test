@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useObject } from 'react-firebase-hooks/database';
 import { DataSnapshot, ref, remove } from 'firebase/database';
 import { db } from '@/lib/firebase/firebase';
@@ -8,6 +8,8 @@ import UsernameDialog from '@/components/user/UsernameDialog';
 import { getUser } from '@/lib/users/user';
 import PageLayout from '@/layouts/PageLayout';
 import { notFound } from 'next/navigation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faCopy } from '@fortawesome/free-solid-svg-icons';
 
 import Game from '@/components/game/Game';
 
@@ -20,6 +22,7 @@ const GamePage = ({
 }) => {
   const gameRef = ref(db, `games/${params.gameID}`);
   const [game, loading, error] = useObject(gameRef);
+  const [copiedGameLink, setCopiedGameLink] = useState(false);
 
   if (game && !game.val()) { // if there is no game with the given ID
     notFound();
@@ -53,6 +56,11 @@ const GamePage = ({
     )
   }
 
+  const copyGameLink = async () => {
+    await navigator.clipboard.writeText(window.location.href);
+    setCopiedGameLink(true);
+  }
+
   return (
     <PageLayout>
       {
@@ -61,11 +69,29 @@ const GamePage = ({
         ) : error ? (
           <p>Error: {error.message}</p>
         ) : !displayGame(game) ? (
-          <div>
-            <p>Game ID: {params.gameID}</p>
-            <div>
-              <p>Player 1: {game?.val().user1?.name || "..."}</p>
-              <p>Player 2: {game?.val().user2?.name || "..."}</p>
+          <div className='flex flex-col gap-2 items-center'>
+            <div className='p-2 rounded bg-gray-200 inline-block'>
+              <div className='mb-2'>
+                Game ID
+              </div>
+              <button
+                className='bg-white rounded p-2 inline-block group overflow-hidden'
+                onClick={copyGameLink}
+              >
+                <span className='mr-2'>
+                  {params.gameID}
+                </span>
+                {
+                  copiedGameLink ?
+                    <span className='text-green-500 transition duration-300 transform rotate-[360deg] inline-block'><FontAwesomeIcon icon={faCheck} /></span> :
+                    <span className='group-hover:opacity-50'>< FontAwesomeIcon icon={faCopy} /></span>
+                }
+              </button>
+            </div>
+            <div className='bg-gray-200 rounded p-2 inline-flex flex-col sm:flex-row items-center gap-4'>
+              <p className='p-2'>Player 1<span className='bg-white p-2 mt-2 rounded block min-w-48'>{game?.val().user1?.name || "..."}</span></p>
+              <p>vs</p>
+              <p className='p-2'>Player 2<span className='bg-white p-2 mt-2 rounded block min-w-48'>{game?.val().user2?.name || "..."}</span></p>
             </div>
             {
               displayUsernameDialog(game) &&
