@@ -1,11 +1,10 @@
 # nextjs-firebase-game-test
 Learning the process of making a multiplayer game with nextjs and firebase.
 
-### Plan
-- multiplayer game
-- game invites
+### Features
+- Online multiplayer tic tac toe game with Firebase backend
+- Lobby Creation
+- Lobby Joining and Sharing via URL
+- User identification using locally stored userID
 
-##### Game Ideeën
-- boter kaas ei
-- steen papier schaar toernooi?
-  - je joint met x aantal mensen en dan generate de website een toernooi bracket en dan hou je toernooi tot er 1 iemand over blijft
+##### Made by Hugo van Schalm and Jesse Crans
