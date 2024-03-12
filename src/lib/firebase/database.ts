@@ -1,7 +1,7 @@
 "use server";
 
-import { ref, get, set, push, update } from "firebase/database";
-import { db } from "@/lib/firebase/firebase";
+import { ref, push, set, get, update } from "firebase/database";
+import { adminDb as db } from "./firebase-admin";
 import { User, getUser } from "../users/user";
 import { getWinner, getTurnNumber, checkGameOver } from "../game/game";
 
@@ -27,8 +27,9 @@ export type Game = {
  * @returns A promise that resolves to the key of the new game
  */
 export const createGame = async () => {
-  const newGameRef = await push(ref(db, 'games'));
-  await set(newGameRef, {
+  // const newGameRef = await push(ref(db, 'games'));
+  const newGameRef = await db.ref('games').push();
+  await newGameRef.set({
     user1: {
       id: '',
       name: '',
@@ -58,16 +59,17 @@ export const createGame = async () => {
  * @param user 
  */
 export const addUserToGame = async (gameID: string, user: User) => {
-  const gameRef = ref(db, `games/${gameID}`);
-  const game = await get(gameRef);
+  const gameRef = db.ref(`games/${gameID}`);
+  const game = await gameRef.get();
 
   if (!game.val().user1?.id) {
-    await set(ref(db, `games/${gameID}/user1`), { id: user.id, name: user.name });
+    const userRef = db.ref(`games/${gameID}/user1`);
+    await userRef.set({ id: user.id, name: user.name });
   } else if (!game.val().user2?.id) {
     const updates: { [key: string]: any } = {};
     updates['/user2'] = { id: user.id, name: user.name };
     updates['/turn'] = Math.random() < 0.5 ? game.val().user1.id : user.id;
-    await update(gameRef, updates);
+    await gameRef.update(updates);
   }
 }
 
@@ -79,8 +81,8 @@ export const addUserToGame = async (gameID: string, user: User) => {
  * @returns A promise that resolves when the database has been updated
  */
 export const makeMove = async (row: number, col: number, gameID: string, userID: string) => {
-  const gameRef = ref(db, `games/${gameID}`);
-  const game = (await get(gameRef)).val() as Game;
+  const gameRef = db.ref(`games/${gameID}`);
+  const game = (await gameRef.get()).val() as Game;
 
   if (game.turn !== userID || game.board[row][col] !== '' || checkGameOver(game)) {
     return;
@@ -112,12 +114,12 @@ export const makeMove = async (row: number, col: number, gameID: string, userID:
     }
   }
 
-  return update(gameRef, updates);
+  return gameRef.update(updates);
 }
 
 export const nextGame = async (gameID: string) => {
-  const gameRef = ref(db, `games/${gameID}`);
-  const game = (await get(gameRef)).val() as Game;
+  const gameRef = db.ref(`games/${gameID}`);
+  const game = (await gameRef.get()).val() as Game;
 
   const updates: { [key: string]: any } = {};
   updates['/board'] = [
@@ -133,5 +135,5 @@ export const nextGame = async (gameID: string) => {
     updates['/turn'] = Math.random() < 0.5 ? game.user1.id : game.user2.id;
   }
 
-  return update(gameRef, updates);
+  return gameRef.update(updates);
 }

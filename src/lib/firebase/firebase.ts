@@ -1,6 +1,9 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
+import admin from "firebase-admin";
+import { initializeApp as initializeAdminApp } from "firebase-admin/app";
+import { getDatabase as getAdminDatabase } from "firebase-admin/database";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 

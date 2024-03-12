@@ -38,7 +38,7 @@ const Game = ({
       {
         gameOver && (getUser().id === game.user1.id ? (
           <button
-            className='p-4 rounded bg-green-500 text-white m-4'
+            className='p-2 rounded bg-green-500 text-white m-4'
             onClick={async () => await nextGame(gameID)}
           >
             Play again

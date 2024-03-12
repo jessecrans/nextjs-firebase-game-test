@@ -1,5 +1,7 @@
 import { User, createUser, storeUser } from '@/lib/users/user';
 import { addUserToGame } from '@/lib/firebase/database';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 
 const UsernameDialog = ({
@@ -9,6 +11,7 @@ const UsernameDialog = ({
 }) => {
   const [username, setUsername] = React.useState('');
   const [warning, setWarning] = React.useState('');
+  const [joining, setJoining] = React.useState(false);
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -26,6 +29,7 @@ const UsernameDialog = ({
       setWarning('Username cannot be empty');
       return;
     }
+    setJoining(true);
     const user: User = createUser(username);
     storeUser(user);
     addUserToGame(gameID, user);
@@ -42,11 +46,17 @@ const UsernameDialog = ({
           maxLength={20}
           className='p-2 border mr-2 rounded'
         />
-        <input
-          type="submit"
-          value={"Join"}
-          className='p-2 bg-blue-500 text-white rounded hover:bg-blue-600'
-        />
+        {
+          joining ? (
+            <div className='p-2 inline'><FontAwesomeIcon icon={faSpinner} spin /></div>
+          ) : (
+            <input
+              type="submit"
+              value={"Join"}
+              className='p-2 bg-blue-500 text-white rounded hover:bg-blue-600'
+            />
+          )
+        }
       </form>
     </div>
   )

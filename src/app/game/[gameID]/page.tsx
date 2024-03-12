@@ -70,10 +70,10 @@ const GamePage = ({
           <p>Error: {error.message}</p>
         ) : !displayGame(game) ? (
           <div className='flex flex-col gap-2 items-center'>
-            <div className='p-2 rounded bg-gray-200 inline-block'>
-              <div className='mb-2'>
-                Game ID
-              </div>
+            <p>
+              <span className='mb-2'>
+                Game ID:
+              </span>
               <button
                 className='bg-white rounded p-2 inline-block group overflow-hidden'
                 onClick={copyGameLink}
@@ -87,11 +87,11 @@ const GamePage = ({
                     <span className='group-hover:opacity-50'>< FontAwesomeIcon icon={faCopy} /></span>
                 }
               </button>
-            </div>
-            <div className='bg-gray-200 rounded p-2 inline-flex flex-col sm:flex-row items-center gap-4'>
-              <p className='p-2'>Player 1<span className='bg-white p-2 mt-2 rounded block min-w-48'>{game?.val().user1?.name || "..."}</span></p>
+            </p>
+            <div>
+              <p><span>{game?.val().user1?.name || "..."}</span></p>
               <p>vs</p>
-              <p className='p-2'>Player 2<span className='bg-white p-2 mt-2 rounded block min-w-48'>{game?.val().user2?.name || "..."}</span></p>
+              <p><span>{game?.val().user2?.name || "..."}</span></p>
             </div>
             {
               displayUsernameDialog(game) &&
